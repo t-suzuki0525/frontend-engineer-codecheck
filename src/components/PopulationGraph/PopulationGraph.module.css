@@ -1,0 +1,25 @@
+.container {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+}
+
+.loading {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.empty {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 64px 16px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
