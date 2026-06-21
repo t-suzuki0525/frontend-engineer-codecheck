@@ -9,4 +9,13 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
+  server: {
+    // X-API-KEY カスタムヘッダーによるCORSプリフライトを回避するためプロキシを使用する
+    proxy: {
+      '/api': {
+        target: 'https://frontend-engineer-codecheck-api.mirai.yumemi.io',
+        changeOrigin: true,
+      },
+    },
+  },
 });
