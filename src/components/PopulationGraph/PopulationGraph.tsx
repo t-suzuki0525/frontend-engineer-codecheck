@@ -153,20 +153,20 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
         </div>
       )}
       <ResponsiveContainer width="100%" height={560}>
-        <LineChart data={chartData} margin={{ top: 24, right: 24, left: 16, bottom: 24 }}>
+        <LineChart data={chartData} margin={{ top: 40, right: 24, left: 16, bottom: 36 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis
             dataKey="year"
             tickFormatter={(v: number) => String(v)}
             tick={{ fontSize: 12 }}
-            label={{ value: '年度', position: 'insideBottomRight', offset: -4, fontSize: 12 }}
+            label={{ value: '年度', position: 'insideBottomRight', offset: -8, fontSize: 12 }}
           />
           <YAxis
             tickFormatter={(v: number) => v.toLocaleString()}
             tick={{ fontSize: 12 }}
             width={80}
             domain={['auto', 'auto']}
-            label={{ value: '人口数', angle: -90, position: 'insideTop', offset: -4, fontSize: 12 }}
+            label={{ value: '人口数', position: 'insideTopLeft', dy: -32, fontSize: 12 }}
           />
           <Tooltip
             wrapperStyle={{ zIndex: 10 }}
@@ -178,6 +178,7 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
             )}
           />
           <Legend
+            wrapperStyle={{ paddingTop: '16px' }}
             formatter={(value: string) => {
               // dataKey（prefCode文字列）から都道府県名に変換して表示する
               const pref = selectedPrefectures.find((p) => String(p.prefCode) === value);
