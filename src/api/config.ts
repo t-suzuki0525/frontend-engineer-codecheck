@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// 開発時はViteプロキシ経由（相対パス）、本番時は直接APIを呼ぶ
-const BASE_URL = import.meta.env.DEV
-  ? ''
-  : 'https://frontend-engineer-codecheck-api.mirai.yumemi.io';
+// 開発時はViteプロキシ、本番時はVercelリライトを経由するため相対パスで統一する
+const BASE_URL = '';
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 /**
