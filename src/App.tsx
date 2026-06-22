@@ -28,6 +28,14 @@ const App = () => {
     });
   }, []);
 
+  const handleSelectAll = useCallback(() => {
+    setSelectedPrefCodes(new Set(prefectures.map((p) => p.prefCode)));
+  }, [prefectures]);
+
+  const handleClearAll = useCallback(() => {
+    setSelectedPrefCodes(new Set());
+  }, []);
+
   const selectedPrefectures = prefectures.filter((p) => selectedPrefCodes.has(p.prefCode));
 
   return (
@@ -44,6 +52,8 @@ const App = () => {
             prefectures={prefectures}
             selectedPrefCodes={selectedPrefCodes}
             onToggle={handleToggle}
+            onSelectAll={handleSelectAll}
+            onClearAll={handleClearAll}
           />
         )}
         {popError && (

@@ -11,10 +11,33 @@ import {
 import type { PopulationLabel, PopulationResponse, Prefecture } from '@/types';
 import styles from './PopulationGraph.module.css';
 
+/**
+ * 人口数を日本語単位（万・億）で整形する
+ * @param value 人口数
+ */
+const formatPopulation = (value: number): string => {
+  if (value >= 1_0000_0000) {
+    return `${(value / 1_0000_0000).toLocaleString()}億`;
+  }
+  if (value >= 1_0000) {
+    return `${(value / 1_0000).toLocaleString()}万`;
+  }
+  return value.toLocaleString();
+};
+
 const LINE_COLORS = [
   '#2563eb', '#dc2626', '#16a34a', '#d97706', '#7c3aed',
   '#db2777', '#0891b2', '#65a30d', '#ea580c', '#6366f1',
   '#0f766e', '#b45309', '#9333ea', '#0284c7', '#15803d',
+  '#f43f5e', // ローズ（赤・ピンクと色相が異なる）
+  '#0ea5e9', // スカイブルー（既存の青系より明るい）
+];
+
+// 色数（17）× パターン数（3）= 51通りで全47都道府県を重複なしにカバーする
+const LINE_DASH_PATTERNS = [
+  undefined, // 実線
+  '8 4',     // 破線
+  '2 4',     // 点線
 ];
 
 type ChartDataPoint = { year: number } & Record<string, number>;
@@ -76,7 +99,7 @@ const CustomTooltip = ({ active, payload, label, selectedPrefectures }: CustomTo
         const pref = selectedPrefectures.find((p) => String(p.prefCode) === entry.dataKey);
         return (
           <p key={entry.dataKey} style={{ color: entry.color, margin: '2px 0' }}>
-            {pref?.prefName ?? entry.dataKey}: {entry.value.toLocaleString()}
+            {pref?.prefName ?? entry.dataKey}: {formatPopulation(entry.value)}
           </p>
         );
       })}
@@ -153,20 +176,20 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
         </div>
       )}
       <ResponsiveContainer width="100%" height={560}>
-        <LineChart data={chartData} margin={{ top: 24, right: 24, left: 16, bottom: 24 }}>
+        <LineChart data={chartData} margin={{ top: 40, right: 24, left: 16, bottom: 36 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis
             dataKey="year"
             tickFormatter={(v: number) => String(v)}
             tick={{ fontSize: 12 }}
-            label={{ value: '年度', position: 'insideBottomRight', offset: -4, fontSize: 12 }}
+            label={{ value: '年度', position: 'insideBottomRight', offset: -8, fontSize: 12 }}
           />
           <YAxis
-            tickFormatter={(v: number) => v.toLocaleString()}
+            tickFormatter={(v: number) => formatPopulation(v)}
             tick={{ fontSize: 12 }}
             width={80}
             domain={['auto', 'auto']}
-            label={{ value: '人口数', angle: -90, position: 'insideTop', offset: -4, fontSize: 12 }}
+            label={{ value: '人口数', position: 'insideTopLeft', dy: -32, fontSize: 12 }}
           />
           <Tooltip
             wrapperStyle={{ zIndex: 10 }}
@@ -178,6 +201,7 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
             )}
           />
           <Legend
+            wrapperStyle={{ paddingTop: '16px' }}
             formatter={(value: string) => {
               // dataKey（prefCode文字列）から都道府県名に変換して表示する
               const pref = selectedPrefectures.find((p) => String(p.prefCode) === value);
@@ -191,8 +215,9 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
               // dataKey を prefCode 文字列にすることで buildChartData の出力と対応させる
               dataKey={String(pref.prefCode)}
               name={String(pref.prefCode)}
-              // 色数を超えた場合は折り返して再利用する
               stroke={LINE_COLORS[i % LINE_COLORS.length]}
+              // 色が一巡するごとにダッシュパターンを切り替え、最大45通りの組み合わせを生成する
+              strokeDasharray={LINE_DASH_PATTERNS[Math.floor(i / LINE_COLORS.length)]}
               dot={false}
               strokeWidth={2}
             />
