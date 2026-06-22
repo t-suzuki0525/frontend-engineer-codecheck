@@ -152,7 +152,7 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
           <p className={styles.loadingText}>読み込み中...</p>
         </div>
       )}
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={560}>
         <LineChart data={chartData} margin={{ top: 8, right: 24, left: 16, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis
@@ -164,6 +164,7 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
             tickFormatter={(v: number) => v.toLocaleString()}
             tick={{ fontSize: 12 }}
             width={80}
+            domain={['auto', 'auto']}
           />
           <Tooltip
             wrapperStyle={{ zIndex: 10 }}
