@@ -153,18 +153,20 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
         </div>
       )}
       <ResponsiveContainer width="100%" height={560}>
-        <LineChart data={chartData} margin={{ top: 8, right: 24, left: 16, bottom: 8 }}>
+        <LineChart data={chartData} margin={{ top: 24, right: 24, left: 16, bottom: 24 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis
             dataKey="year"
             tickFormatter={(v: number) => `${v}年`}
             tick={{ fontSize: 12 }}
+            label={{ value: '年度', position: 'insideBottomRight', offset: -4, fontSize: 12 }}
           />
           <YAxis
             tickFormatter={(v: number) => v.toLocaleString()}
             tick={{ fontSize: 12 }}
             width={80}
             domain={['auto', 'auto']}
+            label={{ value: '人口数', angle: -90, position: 'insideTop', offset: -4, fontSize: 12 }}
           />
           <Tooltip
             wrapperStyle={{ zIndex: 10 }}
