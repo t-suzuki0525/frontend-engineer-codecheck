@@ -96,6 +96,7 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
             width={80}
           />
           <Tooltip
+            wrapperStyle={{ zIndex: 10 }}
             formatter={(value, name) => {
               // dataKey（prefCode文字列）から都道府県名に変換して表示する
               const pref = selectedPrefectures.find((p) => String(p.prefCode) === String(name));
