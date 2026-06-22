@@ -11,6 +11,20 @@ import {
 import type { PopulationLabel, PopulationResponse, Prefecture } from '@/types';
 import styles from './PopulationGraph.module.css';
 
+/**
+ * 人口数を日本語単位（万・億）で整形する
+ * @param value 人口数
+ */
+const formatPopulation = (value: number): string => {
+  if (value >= 1_0000_0000) {
+    return `${(value / 1_0000_0000).toLocaleString()}億`;
+  }
+  if (value >= 1_0000) {
+    return `${(value / 1_0000).toLocaleString()}万`;
+  }
+  return value.toLocaleString();
+};
+
 const LINE_COLORS = [
   '#2563eb', '#dc2626', '#16a34a', '#d97706', '#7c3aed',
   '#db2777', '#0891b2', '#65a30d', '#ea580c', '#6366f1',
@@ -76,7 +90,7 @@ const CustomTooltip = ({ active, payload, label, selectedPrefectures }: CustomTo
         const pref = selectedPrefectures.find((p) => String(p.prefCode) === entry.dataKey);
         return (
           <p key={entry.dataKey} style={{ color: entry.color, margin: '2px 0' }}>
-            {pref?.prefName ?? entry.dataKey}: {entry.value.toLocaleString()}
+            {pref?.prefName ?? entry.dataKey}: {formatPopulation(entry.value)}
           </p>
         );
       })}
@@ -162,7 +176,7 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
             label={{ value: '年度', position: 'insideBottomRight', offset: -8, fontSize: 12 }}
           />
           <YAxis
-            tickFormatter={(v: number) => v.toLocaleString()}
+            tickFormatter={(v: number) => formatPopulation(v)}
             tick={{ fontSize: 12 }}
             width={80}
             domain={['auto', 'auto']}
