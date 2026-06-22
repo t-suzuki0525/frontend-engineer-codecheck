@@ -157,7 +157,7 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis
             dataKey="year"
-            tickFormatter={(v: number) => `${v}年`}
+            tickFormatter={(v: number) => String(v)}
             tick={{ fontSize: 12 }}
             label={{ value: '年度', position: 'insideBottomRight', offset: -4, fontSize: 12 }}
           />
