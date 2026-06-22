@@ -1,6 +1,5 @@
 import {
   CartesianGrid,
-  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -200,14 +199,6 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
               />
             )}
           />
-          <Legend
-            wrapperStyle={{ paddingTop: '16px' }}
-            formatter={(value: string) => {
-              // dataKey（prefCode文字列）から都道府県名に変換して表示する
-              const pref = selectedPrefectures.find((p) => String(p.prefCode) === value);
-              return pref?.prefName ?? value;
-            }}
-          />
           {selectedPrefectures.map((pref, i) => (
             <Line
               key={pref.prefCode}
@@ -224,6 +215,22 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
           ))}
         </LineChart>
       </ResponsiveContainer>
+      {/* Rechartsのlegendをグラフ外に出すことで、モバイルでの凡例とグラフの重なりを防ぐ */}
+      <div className={styles.legend}>
+        {selectedPrefectures.map((pref, i) => (
+          <span key={pref.prefCode} className={styles.legendItem}>
+            <svg width="24" height="12" aria-hidden="true">
+              <line
+                x1="0" y1="6" x2="24" y2="6"
+                stroke={LINE_COLORS[i % LINE_COLORS.length]}
+                strokeWidth="2"
+                strokeDasharray={LINE_DASH_PATTERNS[Math.floor(i / LINE_COLORS.length)]}
+              />
+            </svg>
+            {pref.prefName}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
