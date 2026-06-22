@@ -29,6 +29,15 @@ const LINE_COLORS = [
   '#2563eb', '#dc2626', '#16a34a', '#d97706', '#7c3aed',
   '#db2777', '#0891b2', '#65a30d', '#ea580c', '#6366f1',
   '#0f766e', '#b45309', '#9333ea', '#0284c7', '#15803d',
+  '#f43f5e', // ローズ（赤・ピンクと色相が異なる）
+  '#0ea5e9', // スカイブルー（既存の青系より明るい）
+];
+
+// 色数（17）× パターン数（3）= 51通りで全47都道府県を重複なしにカバーする
+const LINE_DASH_PATTERNS = [
+  undefined, // 実線
+  '8 4',     // 破線
+  '2 4',     // 点線
 ];
 
 type ChartDataPoint = { year: number } & Record<string, number>;
@@ -206,8 +215,9 @@ export const PopulationGraph = ({ populationData, selectedPrefectures, activeLab
               // dataKey を prefCode 文字列にすることで buildChartData の出力と対応させる
               dataKey={String(pref.prefCode)}
               name={String(pref.prefCode)}
-              // 色数を超えた場合は折り返して再利用する
               stroke={LINE_COLORS[i % LINE_COLORS.length]}
+              // 色が一巡するごとにダッシュパターンを切り替え、最大45通りの組み合わせを生成する
+              strokeDasharray={LINE_DASH_PATTERNS[Math.floor(i / LINE_COLORS.length)]}
               dot={false}
               strokeWidth={2}
             />
