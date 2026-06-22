@@ -22,6 +22,23 @@
   color: #6b7280;
 }
 
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #374151;
+}
+
 .empty {
   background-color: #fff;
   border: 1px solid #e5e7eb;
