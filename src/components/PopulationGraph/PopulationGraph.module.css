@@ -6,11 +6,19 @@
   position: relative;
 }
 
-.loading {
+.loadingOverlay {
   position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 0.8rem;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.loadingText {
+  font-size: 0.875rem;
   color: #6b7280;
 }
 
